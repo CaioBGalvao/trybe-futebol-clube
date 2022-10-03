@@ -4,13 +4,13 @@ import IUser from '../interfaces';
 const erroMsg = 'All fields must be filled&400';
 
 const loginSchema = Joi.object({
-  email: Joi.string().email().required()
+  email: Joi.string().email().empty('').required()
     .messages({
       'string.base': erroMsg,
       'string.email': erroMsg,
       'any.required': erroMsg,
     }),
-  password: Joi.string().required()
+  password: Joi.string().empty('').required()
     .messages({
       'string.base': erroMsg,
       'any.required': erroMsg,
