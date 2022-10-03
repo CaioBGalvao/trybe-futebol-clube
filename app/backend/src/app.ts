@@ -1,4 +1,7 @@
 import * as express from 'express';
+import { Request, Response, NextFunction } from 'express';
+import LoginRoute from './routes';
+import 'express-async-errors';
 
 class App {
   public app: express.Express;
@@ -8,11 +11,28 @@ class App {
 
     this.config();
 
+    // minhas rotas
+    this.app.use('/login', new LoginRoute().router);
+
     // Não remover essa rota
-    this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.get('/', (_req, res) => res.json({ ok: true }));
+
+    this.app.use((
+      err: Error,
+      _req: Request,
+      res: Response,
+      _next: NextFunction,
+    ) => {
+      console.log(err.message);
+      if (err.message.includes('&')) {
+        const [message, statusCode] = err.message.split('&');
+        return res.status(Number(statusCode)).json({ message });
+      }
+      res.status(500).json({ message: 'Internal server error' });
+    });
   }
 
-  private config():void {
+  private config(): void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
@@ -24,7 +44,7 @@ class App {
     this.app.use(accessControl);
   }
 
-  public start(PORT: string | number):void {
+  public start(PORT: string | number): void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
   }
 }
