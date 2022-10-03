@@ -19,7 +19,6 @@ const validateToken = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const result = jwt.verify(authorization, JWT_SECRET);
-    console.log('Resultado do token:', result);
     req.body.JwtPayload = result;
   } catch (err) {
     return res.status(401).json({ message: 'Expired or invalid token' });

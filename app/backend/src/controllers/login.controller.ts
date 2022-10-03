@@ -15,7 +15,7 @@ class LoginController {
     const { JwtPayload } = req.body;
     const { email } = JwtPayload;
     const result = await this.loginService.getUser(email);
-    return res.status(200).json(result);
+    return res.status(200).json({ role: result });
   };
 }
 
