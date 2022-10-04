@@ -23,7 +23,7 @@ class App {
       res: Response,
       _next: NextFunction,
     ) => {
-      console.log(err.message);
+      console.error(err.message);
       if (err.message.includes('&')) {
         const [message, statusCode] = err.message.split('&');
         return res.status(Number(statusCode)).json({ message });

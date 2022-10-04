@@ -2,7 +2,7 @@ import * as jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
 const JWT_SECRET: jwt.Secret = process.env.JWT_SECRET || 'secret';
-const JWT_OPTIONS: jwt.SignOptions = { algorithm: 'HS256', expiresIn: '1 days' };
+const JWT_OPTIONS: jwt.SignOptions = { algorithm: 'HS256', expiresIn: '1d' };
 
 const createToken = (payload: jwt.JwtPayload) => {
   const token = jwt
