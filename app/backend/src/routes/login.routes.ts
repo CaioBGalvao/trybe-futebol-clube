@@ -1,6 +1,6 @@
 import * as express from 'express';
-import LoginController from '../controllers';
-import LoginService from '../services';
+import { LoginController } from '../controllers';
+import { LoginService } from '../services';
 import { validateToken } from '../utils/token';
 
 const loginService = new LoginService();

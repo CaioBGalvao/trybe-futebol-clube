@@ -1,3 +1,4 @@
 import ILogin from './ILogin';
+import ITeams from './ITeams';
 
-export default ILogin;
+export { ILogin, ITeams };

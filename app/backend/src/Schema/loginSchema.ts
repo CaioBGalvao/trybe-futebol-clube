@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import IUser from '../interfaces';
+import { ILogin } from '../interfaces';
 
 const erroMsg = 'All fields must be filled&400';
 
@@ -17,7 +17,7 @@ const loginSchema = Joi.object({
     }),
 });
 
-const validateLogin = (userObject: IUser): IUser => {
+const validateLogin = (userObject: ILogin): ILogin => {
   const { error, value } = loginSchema.validate(userObject);
   console.error(error);
 

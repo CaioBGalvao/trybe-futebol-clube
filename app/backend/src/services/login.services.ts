@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 import Users from '../database/models/users.model';
-import ILogin from '../interfaces';
+import { ILogin } from '../interfaces';
 import validateLogin from '../Schema/loginSchema';
 import { createToken } from '../utils/token';
 

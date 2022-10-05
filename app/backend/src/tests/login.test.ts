@@ -7,8 +7,8 @@ import { app } from '../app';
 import Users from '../database/models/users.model';
 
 import { Response } from 'superagent';
-import { mockResolveGetLogin, mockResolvePostLogin, mockSendFail, mockSendInvalidPostLoginEmail, mockSendInvalidPostLoginPassword, mockSendPostLogin, tokenInvalido, tokenValido } from './mocks';
-import ILogin from '../interfaces';
+import { mockResolveGetLogin, mockResolvePostLogin, mockSendFail, mockSendInvalidPostLoginEmail, mockSendInvalidPostLoginPassword, mockSendPostLogin, tokenInvalido, tokenValido } from './login.mocks';
+
 import { describe } from 'mocha';
 
 chai.use(chaiHttp);
