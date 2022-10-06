@@ -2,7 +2,9 @@ import * as bcrypt from 'bcryptjs';
 import Users from '../database/models/users.model';
 import { ILogin } from '../interfaces';
 import validateLogin from '../Schema/loginSchema';
-import { createToken } from '../utils/token';
+import Token from '../utils/token';
+
+const token = new Token();
 
 class LoginService {
   private usersModel = Users;
@@ -27,7 +29,7 @@ class LoginService {
       throw new Error('Incorrect email or password&401');
     }
 
-    return createToken({ email });
+    return token.createToken({ email });
   };
 
   public getUser = async (email: string): Promise<string> => {

@@ -35,8 +35,6 @@ describe('Rota Teams', () => {
       it('Deve retornar todos os times', async () => {
         const response = await chai.request(app).get('/teams')
         const teams = response.body
-        console.log(teams.status)
-        console.log(teams.body)
 
         expect(response.status).to.be.equal(200);
       });
@@ -59,8 +57,6 @@ describe('Rota Teams', () => {
       it('Deve retornar apenas 1 team', async () => {
         const response = await chai.request(app).get('/teams/1')
         const team = response.body
-        console.log(team.status)
-        console.log(team.body)
 
         expect(response.status).to.be.equal(200);
       });

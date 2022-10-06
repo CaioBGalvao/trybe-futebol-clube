@@ -11,10 +11,16 @@
 
 import { Model, DataTypes } from 'sequelize';
 import db from '.';
+import Teams from './teams.model';
 
 class Matches extends Model {
+  [x: string]: any;
   id!: number;
-  teamName!: string;
+  homeTeam!: number;
+  homeTeamGoals!: number;
+  awayTeam!: number;
+  awayTeamGoals!: number;
+  inProgress!: boolean;
 }
 
 // Acho que para setar (set) um valor de caracteres para um string é necessário usar o DataTypes.STRING com o contrutor new para incerir um valor.
@@ -44,14 +50,20 @@ Matches.init({
     allowNull: false,
   },
   inProgress: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
   },
 }, {
   sequelize: db,
   underscored: true, // Converte camelCase para snake_case dentro do banco
-  modelName: 'teams',
+  modelName: 'matches',
   timestamps: false,
 });
+
+Matches.belongsTo(Teams, { foreignKey: 'homeTeam', as: 'teamHome' });
+Matches.belongsTo(Teams, { foreignKey: 'awayTeam', as: 'teamAway' });
+
+Teams.hasMany(Matches, { foreignKey: 'homeTeam', as: 'teamHome' });
+Teams.hasMany(Matches, { foreignKey: 'awayTeam', as: 'teamAway' });
 
 export default Matches;

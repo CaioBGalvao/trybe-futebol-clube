@@ -1,7 +1,8 @@
 import * as express from 'express';
 import { Request, Response, NextFunction } from 'express';
-import { LoginRoute, TeamsRoute } from './routes';
+import { LoginRoute, MatchesRoute, TeamsRoute } from './routes';
 import 'express-async-errors';
+import middlewareError from './middleware/middleware.error';
 
 class App {
   public app: express.Express;
@@ -14,32 +15,22 @@ class App {
     // minhas rotas
     this.app.use('/login', new LoginRoute().router);
     this.app.use('/teams', new TeamsRoute().router);
+    this.app.use('/matches', new MatchesRoute().router);
 
     // Não remover essa rota
-    this.app.get('/', (_req, res) => res.json({ ok: true }));
+    this.app.get('/', (_req: Request, res: Response) => res.json({ ok: true }));
 
-    this.app.use((
-      err: Error,
-      _req: Request,
-      res: Response,
-      _next: NextFunction,
-    ) => {
-      console.error(err.message);
-      if (err.message.includes('&')) {
-        const [message, statusCode] = err.message.split('&');
-        return res.status(Number(statusCode)).json({ message });
-      }
-      res.status(500).json({ message: 'Internal server error' });
-    });
+    this.app.use(middlewareError);
   }
 
   private config(): void {
-    const accessControl: express.RequestHandler = (_req, res, next) => {
-      res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
-      res.header('Access-Control-Allow-Headers', '*');
-      next();
-    };
+    const accessControl: express
+      .RequestHandler = (_req: Request, res: Response, next: NextFunction) => {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
+        res.header('Access-Control-Allow-Headers', '*');
+        next();
+      };
 
     this.app.use(express.json());
     this.app.use(accessControl);
