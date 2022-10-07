@@ -9,7 +9,7 @@ class MatchesController {
 
   public getAll = async (_req: Request, res: Response) => {
     const matches = await this.matchesService.getAll();
-    res.status(200).json(matches);
+    return res.status(200).json(matches);
   };
 
   public getInProgress = async (req: Request, res: Response) => {
@@ -30,16 +30,11 @@ class MatchesController {
 
   public postMatchInProgress = async (req: Request, res: Response) => {
     const match: IMatch = req.body;
-    const { inProgress } = match;
 
     if (!match) {
       return res.status(400).json({ message: matchNotFound });
     }
-
-    if (!inProgress || inProgress !== true) {
-      return res.status(400).json({ message: 'Only matches in progress can be registered' });
-    }
-
+    match.inProgress = true;
     const newMatch = await this.matchesService.postMatchInProgress(match);
 
     return res.status(201).json(newMatch);

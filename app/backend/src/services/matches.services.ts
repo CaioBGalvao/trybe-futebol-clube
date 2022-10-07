@@ -6,16 +6,28 @@ const teams: number[] = [];
 
 class MatchesService {
   private matchesModel = Matches;
-  private teamsModel = Teams;
 
   public getAll = async (): Promise<IMatch[]> => {
-    const matches = await this.matchesModel.findAll();
+    const matches = await this.matchesModel.findAll(
+      {
+        include:
+          [
+            { model: Teams, as: 'teamHome', attributes: ['teamName'] },
+            { model: Teams, as: 'teamAway', attributes: ['teamName'] },
+          ],
+      },
+    );
     return matches;
   };
 
   public getInProgress = async (inProgress: boolean): Promise<IMatch[]> => {
     const matches = await this.matchesModel.findAll({
       where: { inProgress },
+      include:
+        [
+          { model: Teams, as: 'teamHome', attributes: ['teamName'] },
+          { model: Teams, as: 'teamAway', attributes: ['teamName'] },
+        ],
     });
     return matches;
   };
@@ -30,10 +42,12 @@ class MatchesService {
 
     const isAllOk = await Promise
       .all(teams
-        .map((teamId) => this.teamsModel
+        .map((teamId) => Teams
           .findOne(
             { where: { id: teamId } },
           )));
+
+    console.log('Verificação de times', isAllOk);
 
     if (isAllOk.includes(null)) {
       throw new Error('There is no team with such id!&404');
@@ -56,7 +70,10 @@ class MatchesService {
       return false;
     }
 
-    await this.matchesModel.update({ inProgress: false }, { where: { id: match.id } });
+    const response = await this.matchesModel
+      .update({ inProgress: false }, { where: { id: match.id } });
+
+    console.log(response);
 
     return true;
   };
