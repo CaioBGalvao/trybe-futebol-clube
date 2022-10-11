@@ -14,7 +14,6 @@ import db from '.';
 import Teams from './teams.model';
 
 class Matches extends Model {
-  [x: string]: any;
   id!: number;
   homeTeam!: number;
   homeTeamGoals!: number;

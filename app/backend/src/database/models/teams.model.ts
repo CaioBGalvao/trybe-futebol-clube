@@ -15,6 +15,7 @@ import db from '.';
 class Teams extends Model {
   id!: number;
   teamName!: string;
+  teamHome: any;
 }
 
 // Acho que para setar (set) um valor de caracteres para um string é necessário usar o DataTypes.STRING com o contrutor new para incerir um valor.

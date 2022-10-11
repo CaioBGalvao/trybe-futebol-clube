@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { Request, Response, NextFunction } from 'express';
-import { LoginRoute, MatchesRoute, TeamsRoute } from './routes';
+import { LoginRoute, MatchesRoute, TeamsRoute, HomeRoute } from './routes';
 import 'express-async-errors';
 import middlewareError from './middleware/middleware.error';
 
@@ -16,6 +16,7 @@ class App {
     this.app.use('/login', new LoginRoute().router);
     this.app.use('/teams', new TeamsRoute().router);
     this.app.use('/matches', new MatchesRoute().router);
+    this.app.use('/leaderboard/home', new HomeRoute().router);
 
     // Não remover essa rota
     this.app.get('/', (_req: Request, res: Response) => res.json({ ok: true }));
